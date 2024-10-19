@@ -52,3 +52,7 @@ export const {
    useGetUserByIdQuery,
    useUpdateUserMutation
 } = userApi
+
+export const {
+   endpoints: { login, current, register, getUserById, updateUser}
+} = userApi

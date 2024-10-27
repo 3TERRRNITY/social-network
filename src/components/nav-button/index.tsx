@@ -12,7 +12,7 @@ export const NavButton: React.FC<NavButtonProps> = ({
   href,
 }) => {
   return (
-    <Button className='flex justify-start text-xl' icon={icon} color='primary'>
+    <Button className='flex justify-start text-xl' icon={icon} color='default'>
       <Link to={href}>{children}</Link>
     </Button>
   )

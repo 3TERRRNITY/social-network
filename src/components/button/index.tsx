@@ -6,6 +6,7 @@ type ButtonProps = {
   className?: string
   type?: 'button' | 'submit' | 'reset'
   fullWidth?: boolean
+  isLoading?: boolean
   color:
     | 'default'
     | 'primary'
@@ -22,16 +23,19 @@ export const Button: React.FC<ButtonProps> = ({
   color,
   icon,
   fullWidth,
+  isLoading,
   type,
 }) => {
   return (
     <NextButton
       className={className}
       startContent={icon}
+      type={type}
       size='lg'
       color={color}
-      variant='light'
+      variant='solid'
       fullWidth={fullWidth}
+      isLoading={isLoading}
     >
       {children}
     </NextButton>

@@ -1,60 +1,57 @@
-import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Input } from '../components/input'
+import { Input } from '../../components/input'
 import { Link } from '@nextui-org/react'
-import { Button } from '../components/button'
-import { useRegisterMutation } from '../app/services/userApi'
-import { hasErrorField } from '../utils/hasErrorHeld'
-import { ErrorMessage } from '../components/error-message'
+import { Button } from '../../components/button'
+import {
+  useLazyCurrentQuery,
+  useLoginMutation,
+} from '../../app/services/userApi'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { ErrorMessage } from '../../components/error-message'
+import { hasErrorField } from '../../utils/hasErrorHeld'
 
-type Register = {
+type Login = {
   email: string
-  name: string
   password: string
 }
 
-type RegisterProps = {
+type LoginProps = {
   setSelected: (value: string) => void
 }
 
-export const Register: React.FC<RegisterProps> = ({ setSelected }) => {
+export const Login: React.FC<LoginProps> = ({ setSelected }) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<Register>({
+  } = useForm<Login>({
     mode: 'onChange',
     reValidateMode: 'onBlur',
     defaultValues: {
       email: '',
       password: '',
-      name: '',
     },
   })
 
-  const [register, { isLoading }] = useRegisterMutation()
+  const [login, { isLoading }] = useLoginMutation()
+  const navigate = useNavigate()
   const [error, setError] = useState('')
+  const [triggerCurrentQuery] = useLazyCurrentQuery()
 
-  const onSubmit = async (data: Register) => {
+  const onSubmit = async (data: Login) => {
     try {
-      await register(data).unwrap()
-      setSelected('login')
+      await login(data).unwrap()
+      await triggerCurrentQuery().unwrap()
+      navigate('/')
     } catch (error) {
       if (hasErrorField(error)) {
         setError(error.data.error)
       }
     }
   }
-
   return (
     <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        control={control}
-        name='name'
-        label='Имя'
-        type='text'
-        required='Обязательно надо, старина'
-      />
       <Input
         control={control}
         name='email'
@@ -73,19 +70,19 @@ export const Register: React.FC<RegisterProps> = ({ setSelected }) => {
       <ErrorMessage error={error} />
 
       <p className='text-center text-small'>
-        Уже есть аккаунт?{' '}
+        Впервые тут?{' '}
         <Link
           size='sm'
           className='cursor-pointer'
-          onPress={() => setSelected('login')}
+          onPress={() => setSelected('sign-up')}
         >
-          Войти
+          Зарегистрируйся
         </Link>
       </p>
 
       <div className='flex gap-2 justify-end'>
         <Button fullWidth color='primary' type='submit' isLoading={isLoading}>
-          Зарегистрироваться
+          Войти
         </Button>
       </div>
     </form>

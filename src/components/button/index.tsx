@@ -5,6 +5,15 @@ type ButtonProps = {
   icon?: JSX.Element
   className?: string
   type?: 'button' | 'submit' | 'reset'
+  variant?:
+    | 'solid'
+    | 'bordered'
+    | 'light'
+    | 'flat'
+    | 'faded'
+    | 'shadow'
+    | 'ghost'
+    | undefined
   fullWidth?: boolean
   isLoading?: boolean
   color:
@@ -24,6 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
   icon,
   fullWidth,
   isLoading,
+  variant = 'solid',
   type,
 }) => {
   return (
@@ -33,7 +43,7 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       size='lg'
       color={color}
-      variant='solid'
+      variant={variant}
       fullWidth={fullWidth}
       isLoading={isLoading}
     >

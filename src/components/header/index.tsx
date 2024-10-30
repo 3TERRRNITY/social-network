@@ -11,7 +11,7 @@ import { FaRegMoon } from 'react-icons/fa'
 import { LuSunMedium } from 'react-icons/lu'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { logout, selectIsAuthentificated } from '../../features/user/userSlice'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { CiLogout } from 'react-icons/ci'
 
 export const Header = () => {
@@ -27,9 +27,11 @@ export const Header = () => {
   }
 
   return (
-    <Navbar>
+    <Navbar className='mx-auto'>
       <NavbarBrand>
-        <p className='font-bold text-inherit'>🅱️🚴‍♂️ network</p>
+        <Link to={'/'}>
+          <p className='font-bold text-inherit'>🅱️🚴‍♂️ network</p>
+        </Link>
       </NavbarBrand>
       <NavbarContent justify='end'>
         <NavbarItem

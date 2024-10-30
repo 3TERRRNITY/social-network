@@ -1,15 +1,19 @@
 import {
   useCreatePostMutation,
   useLazyGetAllPostsQuery,
+  useLazyGetPostByIdQuery,
 } from '../../app/services/postsApi'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Textarea } from '@nextui-org/react'
 import { ErrorMessage } from '../error-message'
 import { IoMdCreate } from 'react-icons/io'
+import { useCreateCommentMutation } from '../../app/services/commentsApi'
+import { useParams } from 'react-router-dom'
 
-export const CreatePost = () => {
-  const [createPost] = useCreatePostMutation()
-  const [triggerAllPosts] = useLazyGetAllPostsQuery()
+export const CreateComment = () => {
+  const params = useParams<{ id: string }>()
+  const [createComment] = useCreateCommentMutation()
+  const [getPostById] = useLazyGetPostByIdQuery()
 
   const {
     handleSubmit,
@@ -22,9 +26,14 @@ export const CreatePost = () => {
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await createPost({ content: data.post }).unwrap()
-      setValue('post', '')
-      await triggerAllPosts().unwrap()
+      if (params.id) {
+        await createComment({
+          content: data.comment,
+          postId: params.id,
+        }).unwrap()
+        setValue('comment', '')
+        await getPostById(params.id).unwrap()
+      }
     } catch (error) {
       console.error(error)
     }
@@ -32,7 +41,7 @@ export const CreatePost = () => {
   return (
     <form className='flex-grow' onSubmit={onSubmit}>
       <Controller
-        name='post'
+        name='comment'
         control={control}
         defaultValue={''}
         rules={{ required: 'Пиши не бойся. Я друг.' }}
@@ -40,7 +49,7 @@ export const CreatePost = () => {
           <Textarea
             {...field}
             labelPlacement='outside'
-            placeholder='Как жизнь?'
+            placeholder='Ответь корешу'
             className='mb-5'
           />
         )}
@@ -54,7 +63,7 @@ export const CreatePost = () => {
         endContent={<IoMdCreate />}
         type='submit'
       >
-        Запульнуть в свет
+        Ответить корешу
       </Button>
     </form>
   )

@@ -5,10 +5,10 @@ import { FaUsers } from 'react-icons/fa'
 
 export const Navbar = () => {
   return (
-    <nav>
+    <nav className='max-w-[1440px]'>
       <ul className='flex flex-col gap-5'>
         <li>
-          <NavButton href='/' icon={<BsPostcard />}>
+          <NavButton href='' icon={<BsPostcard />}>
             Посты
           </NavButton>
         </li>

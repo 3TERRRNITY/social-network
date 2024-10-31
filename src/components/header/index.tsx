@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { logout, selectIsAuthentificated } from '../../features/user/userSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import { CiLogout } from 'react-icons/ci'
+import { Logo } from '../logo'
 
 export const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
@@ -27,10 +28,10 @@ export const Header = () => {
   }
 
   return (
-    <Navbar className='mx-auto'>
+    <Navbar className='mx-auto py-2'>
       <NavbarBrand>
         <Link to={'/'}>
-          <p className='font-bold text-inherit'>🅱️🚴‍♂️ network</p>
+          <Logo />
         </Link>
       </NavbarBrand>
       <NavbarContent justify='end'>
